@@ -22,6 +22,12 @@
 	<div class="card-body">
 		<form method="post" action="{{ route('users.store') }}" enctype="multipart/form-data">
 			@csrf
+            <div class="row mb-4">
+                <label class="col-sm-2 col-label-form">Profile Picture</label>
+                <div class="col-sm-10">
+                    <input type="file" name="profile_picture" class="form-control" accept="image/*" />
+                </div>
+            </div>
             <div class="row mb-3">
                 <label class="col-sm-2 col-label-form">Nama Lengkap</label>
                 <div class="col-sm-10">
@@ -58,7 +64,7 @@
                 <div class="col-sm-10">
                     <select name="provinsi" class="form-control" id="provinsi" data-provinsi-id="">
                         @foreach ($provinsiOptions as $option)
-                            <option value="{{ $option->id }}">{{ $option->nama }}</option>
+                            <option value="{{ $option->nama }}">{{ $option->nama }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -69,7 +75,7 @@
                 <div class="col-sm-10">
                     <select name="kabupaten" class="form-control" id="kabupaten">
                         @foreach ($kabupatenOptions as $option)
-                            <option value="{{ $option->id }}">{{ $option->nama }}</option>
+                            <option value="{{ $option->nama }}">{{ $option->nama }}</option>
                         @endforeach
                                         </select>
                 </div>
@@ -117,7 +123,7 @@
                 <div class="col-sm-10">
                     <select name="provinsi_lahir" class="form-control" id="provinsi-lahir" data-provinsi-id="">
                         @foreach ($provinsiOptions as $option)
-                            <option value="{{ $option->id }}">{{ $option->nama }}</option>
+                            <option value="{{ $option->nama }}">{{ $option->nama }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -128,7 +134,7 @@
                 <div class="col-sm-10">
                     <select name="kota_lahir" class="form-control" id="kota_lahir">
                         @foreach ($kabupatenOptions as $option)
-                            <option value="{{ $option->id }}">{{ $option->nama }}</option>
+                            <option value="{{ $option->nama }}">{{ $option->nama }}</option>
                         @endforeach
                                         </select>
                 </div>
@@ -174,38 +180,6 @@
 
 @endsection('content')
 
-{{-- <script>
-    let selectedProvinsi = document.getElementById('provinsi-lahir');
-    console.log(selectedProvinsi, "ini provinsi")
-    const kabupatenSelect = document.getElementById('kabupaten');
-
-    selectedProvinsi.addEventListener('change', async function () {
-        console.log('Selected Provinsi changed'); // Add this line
-        const provinsiId = this.value;
-        kabupatenSelect.innerHTML = ''; // Clear existing options
-
-        if (provinsiId) {
-            try {
-                console.log('Fetching kabupaten options for provinsi ID:', provinsiId);
-                const response = await fetch(`/get-kabupaten/${provinsiId}`);
-                const kabupatenOptions = await response.json();
-                console.log('Fetched kabupaten options:', kabupatenOptions);
-
-                kabupatenOptions.forEach(option => {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = option.id;
-                    optionElement.textContent = option.nama;
-                    kabupatenSelect.appendChild(optionElement);
-                });
-
-                console.log('Appended options to kabupaten select:', kabupatenSelect.innerHTML);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    });
-</script> --}}
-
 <script>
     $('#provinsi-lahir').select2();
     $('#kota_lahir').select2();
@@ -231,27 +205,27 @@
         }
     });
 
-    // teleponInput.addEventListener('input', function () {
-    //     const telepon = teleponInput.value.trim();
-    //     const teleponPattern = /^0\d{7,9}$/;
+    teleponInput.addEventListener('input', function () {
+        const telepon = teleponInput.value.trim();
+        const teleponPattern = /^0\d{6,12}$/;
 
-    //     if (teleponPattern.test(telepon)) {
-    //         teleponError.textContent = '';
-    //     } else {
-    //         teleponError.textContent = 'Invalid phone number';
-    //     }
-    // });
+        if (teleponPattern.test(telepon)) {
+            teleponError.textContent = '';
+        } else {
+            teleponError.textContent = 'Invalid phone number';
+        }
+    });
 
-    // hpInput.addEventListener('input', function () {
-    //     const hpNumber = hpInput.value.trim();
-    //     const hpPattern = /^0\d{7,9}$/;
+    hpInput.addEventListener('input', function () {
+        const hpNumber = hpInput.value.trim();
+        const hpPattern = /^0\d{6,12}$/;
 
-    //     if (hpPattern.test(hpNumber)) {
-    //         hpError.textContent = '';
-    //     } else {
-    //         hpError.textContent = 'Invalid mobile phone number';
-    //     }
-    // });
+        if (hpPattern.test(hpNumber)) {
+            hpError.textContent = '';
+        } else {
+            hpError.textContent = 'Invalid mobile phone number';
+        }
+    });
 </script>
 
 

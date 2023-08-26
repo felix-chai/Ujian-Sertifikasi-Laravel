@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Kabupaten;
 use App\Models\Provinsi;
+use PDF;
+
 
 
 
@@ -40,14 +42,14 @@ class UserController extends Controller
         $request->validate([
             'nama_lengkap' => 'required',
             'email' => 'required|email',
-            'nomor_telepon' => 'required',
+            'nomor_telepon' => ['required', 'regex:/^0\d{6,12}$/'],
             'password' => 'required',
             'alamat_ktp' => 'required',
             'alamat_sekarang' => 'required',
             'kecamatan' => 'required',
             'kabupaten' => 'required',
             'provinsi' => 'required',
-            'nomor_hp' => 'required',
+            'nomor_hp' => ['required', 'regex:/^0\d{6,12}$/'],
             'kewarganegaraan' => 'required',
             'tanggal_lahir' => 'required|date',
             'tempat_lahir' => 'required',
@@ -56,9 +58,16 @@ class UserController extends Controller
             'jenis_kelamin' => 'required',
             'status_menikah' => 'required',
             'agama' => 'required',
+            'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $user = new User;
         // Set the additional fields
+        if ($request->hasFile('profile_picture')) {
+            $image = $request->file('profile_picture');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('profile_pictures', $imageName);
+    
+        }
         $user->nama_lengkap = $request->nama_lengkap;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
@@ -77,10 +86,11 @@ class UserController extends Controller
         $user->jenis_kelamin = $request->jenis_kelamin;
         $user->status_menikah = $request->status_menikah;
         $user->agama = $request->agama;
+        $user->profile_picture = $request->profile_picture;
 
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'Users Added successfully.');
+        return redirect()->route('login')->with('success', 'Users Added successfully.');
     }
 
     /**
@@ -125,6 +135,7 @@ class UserController extends Controller
             'jenis_kelamin' => 'required',
             'status_menikah' => 'required',
             'agama' => 'required',
+            'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Set the fields
@@ -146,7 +157,14 @@ class UserController extends Controller
         $user->status_menikah = $request->status_menikah;
         $user->agama = $request->agama;
 
-        // Update password only if a new one is provided
+        if ($request->hasFile('profile_picture')) {
+            $image = $request->file('profile_picture');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('public/profile_pictures', $imageName);
+    
+            $user->profile_picture = 'profile_pictures/' . $imageName;
+        }
+        
         if ($request->has('password') && !empty($request->password)) {
             $user->password = Hash::make($request->password);
         }
@@ -172,30 +190,13 @@ class UserController extends Controller
 
         return response()->json($kabupatenOptions);
     }
-
-
-    //    public function showLoginForm()
-    //    {
-    //        return view('auth.login');
-    //    }
-
-
-    //    public function login(Request $request)
-    //    {
-    //        $credentials = $request->only('email', 'password');
-
-    //        if (Auth::attempt($credentials)) {
-    //            // Authentication was successful
-    //            return redirect()->intended(route('dashboard'));
-    //        }
-
-    //        // Authentication failed
-    //        return back()->withErrors(['email' => 'Invalid credentials']);
-    //    }
-
-    //    public function logout()
-    //    {
-    //        Auth::logout();
-    //        return redirect()->route('login'); // Change 'login' to your desired login page route
-    //    }
+    
+    public function exportToPDF($userId)
+    {
+        $user = User::findOrFail($userId);
+    
+        $pdf = PDF::loadView('pdf_export', compact('user'));
+    
+        return $pdf->download('user_details.pdf');
+    }
 }

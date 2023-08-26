@@ -36,6 +36,7 @@ class User extends Authenticatable
         'jenis_kelamin',
         'status_menikah',
         'agama',
+        'profile_picture'
     ];
     /**
      * The attributes that should be hidden for serialization.

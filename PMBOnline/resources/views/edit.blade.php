@@ -8,6 +8,21 @@
         <form method="post" action="{{ route('users.update', $user->id) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+			<div class="row mb-4">
+				<label class="col-sm-2 col-label-form">Profile Picture</label>
+				<div class="col-sm-10">
+					<input type="file" name="profile_picture" class="form-control" accept="image/*" />
+				</div>
+			</div>
+			
+			@if ($user->profile_picture)
+				<div class="row mb-4">
+					<label class="col-sm-2 col-label-form">Current Profile Picture</label>
+					<div class="col-sm-10">
+                        <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture" style="max-width: 200px;">
+					</div>
+				</div>
+			@endif
 			<div class="row mb-3">
 				<label class="col-sm-2 col-label-form">Nama Lengkap</label>
 				<div class="col-sm-10">
@@ -44,7 +59,7 @@
 				<div class="col-sm-10">
 					<select name="provinsi" class="form-control" id="provinsi" data-provinsi-id="">
 						@foreach ($provinsiOptions as $option)
-							<option value="{{ $option->id }}" {{ $user->provinsi == $option->id ? 'selected' : '' }}>{{ $option->nama }}</option>
+							<option value="{{ $option->nama }}" {{ $user->provinsi == $option->nama ? 'selected' : '' }}>{{ $option->nama }}</option>
 						@endforeach
 					</select>
 				</div>
@@ -54,7 +69,7 @@
 				<div class="col-sm-10">
 					<select name="kabupaten" class="form-control" id="kabupaten">
 						@foreach ($kabupatenOptions as $option)
-							<option value="{{ $option->id }}" {{ $user->kabupaten == $option->id ? 'selected' : '' }}>{{ $option->nama }}</option>
+							<option value="{{ $option->nama }}" {{ $user->kabupaten == $option->nama ? 'selected' : '' }}>{{ $option->nama }}</option>
 						@endforeach
 					</select>
 				</div>
@@ -102,7 +117,7 @@
 				<div class="col-sm-10">
 					<select name="provinsi_lahir" class="form-control" id="provinsi-lahir" data-provinsi-id="">
 						@foreach ($provinsiOptions as $option)
-							<option value="{{ $option->id }}" {{ $user->provinsi_lahir == $option->id ? 'selected' : '' }}>{{ $option->nama }}</option>
+							<option value="{{ $option->nama }}" {{ $user->provinsi_lahir == $option->nama ? 'selected' : '' }}>{{ $option->nama }}</option>
 						@endforeach
 					</select>
 				</div>
@@ -112,7 +127,7 @@
 				<div class="col-sm-10">
 					<select name="kota_lahir" class="form-control" id="kota_lahir">
 						@foreach ($kabupatenOptions as $option)
-							<option value="{{ $option->id }}" {{ $user->kota_lahir == $option->id ? 'selected' : '' }}>{{ $option->nama }}</option>
+							<option value="{{ $option->nama }}" {{ $user->kota_lahir == $option->nama ? 'selected' : '' }}>{{ $option->nama }}</option>
 						@endforeach
 					</select>
 				</div>

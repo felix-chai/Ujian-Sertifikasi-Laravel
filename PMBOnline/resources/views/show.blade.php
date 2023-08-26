@@ -8,8 +8,15 @@
 		<div class="row">
 			<div class="col col-md-6"><b>Student Details</b></div>
 			<div class="col col-md-6">
+				<a href="{{ route('exportpdf', ['user' => $user->id]) }}" class="btn btn-primary">Export as PDF</a>
 				<a href="{{ route('users.index') }}" class="btn btn-primary btn-sm float-end">View All</a>
 			</div>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<label class="col-sm-2 col-label-form"><b>Profile Picture</b></label>
+		<div class="col-sm-10">
+			<img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture" style="max-width: 200px;">
 		</div>
 	</div>
 	<div class="row mb-3">
@@ -18,6 +25,7 @@
 			{{ $user->nama_lengkap }}
 		</div>
 	</div>
+
 	<div class="row mb-3">
 		<label class="col-sm-2 col-label-form"><b>Email</b></label>
 		<div class="col-sm-10">

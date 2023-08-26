@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col col-md-6"><b>Student Data</b></div>
             <div class="col col-md-6">
-                <a href="{{ route('users.create') }}" class="btn btn-success btn-sm float-end">Add</a>
+                {{-- <a href="{{ route('users.create') }}" class="btn btn-success btn-sm float-end">Add</a> --}}
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit" class="btn btn-danger btn-sm float-end">Logout</button>
@@ -24,7 +24,7 @@
     <div class="card-body">
         <table class="table table-bordered">
             <tr>
-                <th>Image</th>
+                <th>Kewarganegaraan</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Gender</th>
@@ -35,7 +35,7 @@
                 @foreach($data as $row)
 
                     <tr>
-                        <td><img src="{{ asset('images/' . $row->user_image) }}" width="75" /></td>
+                        <td>{{ $row->kewarganegaraan }}</td>
                         <td>{{ $row->nama_lengkap }}</td>
                         <td>{{ $row->email }}</td>
                         <td>{{ $row->jenis_kelamin }}</td>
